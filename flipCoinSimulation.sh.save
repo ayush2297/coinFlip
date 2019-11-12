@@ -1,0 +1,124 @@
+#! /bin/bash
+
+isHeads=0
+isTails=1
+headCount=0
+tailCount=0
+hCount=0
+tCount=0
+hhCount=0
+ttCount=0
+htCount=0
+thCount=0
+hhhCount=0
+hhtCount=0
+hthCount=0
+httCount=0
+thhCount=0
+thtCount=0
+tthCount=0
+tttCount=0
+
+mulByHundred=100
+declare -A SfirstCoin 	
+declare -A DfirstCoin
+declare -A DsecondCoin
+declare -A TfirstCoin
+declare -A TsecondCoin
+declare -A TthirdCoin 
+
+read -p "enter the number of times you want to flip the coin : " repeatCount
+
+function flip(){
+	flipAcoin=$((RANDOM%2)) 
+   if [ $flipAcoin -eq $isHeads ]
+   then
+		answer="heads"		
+      headCount=$(($headCount+1))
+   else
+		answer="tails"
+      tailCount=$(($tailCount+1))
+   fi
+	echo "$answer"
+}
+
+function DaddToCounter(){
+	if [ "$1" ==  "$2" ]
+   then
+      if [ "$1" == "heads" ]
+      then
+         hhCount=$(($hhCount+1))
+      else
+         ttCount=$(($ttCount+1))
+      fi
+   else
+      if [ "$1" == "heads" ]
+      then
+         htCount=$(($htCount+1))
+      else
+         thCount=$(($thCount+1))
+      fi
+   fi
+}
+
+function SaddToCounter(){
+	if [ "$1" == "heads" ]
+   then
+   	hCount=$(($hCount+1))
+   else
+		tCount=$(($tCount+1))		
+	fi
+}
+
+function singlet(){
+	coin1="$(flip )"
+	SfirstCoin["$i"]=$coin1
+	SaddToCounter $coin1
+}
+
+function doublet(){
+	coin1="$(flip )"
+   coin2="$(flip )"
+   DfirstCoin["$i"]=$coin1
+   DsecondCoin["$i"]=$coin2
+   DaddToCounter $coin1 $coin2
+}
+
+function triplet(){
+	<pre>coin1<font color="#4E9A06">=</font><font color="#FCE94F"><b>&quot;$(flip )&quot;</b></font>
+   coin2<font color="#4E9A06">=</font><font color="#FCE94F"><b>&quot;$(flip )&quot;</b></font>
+   DfirstCoin<font color="#4E9A06">[</font><font color="#FCE94F"><b>&quot;$i&quot;</b></font><font color="#4E9A06">]=</font><font color="#EF2929"><b>$coin1</b></font>
+   DsecondCoin<font color="#4E9A06">[</font><font color="#FCE94F"><b>&quot;$i&quot;</b></font><font color="#4E9A06">]=</font><font color="#EF2929"><b>$coin2</b></font>
+   DaddToCounter <font color="#EF2929"><b>$coin1</b></font> <font color="#EF2929"><b>$coin2</b></font></pre>
+}
+for (( i=0; $i<$repeatCount ; i++ ))
+do
+	singlet
+	doublet
+	triplet 
+done
+
+
+function percentage(){
+	echo "$(( $(($1*$mulByHundred)) / $2))" 
+}
+countMax=${#SfirstCoin[@]}
+
+
+
+for (( i=0 ; i<$countMax ; i++ ))
+do
+	echo coin 1 : ${firstCoin["$i"]}      coin 2: ${secondCoin["$i"]}
+done
+
+hPerc="$( percentage $hCount $repeatCount)"
+tPerc="$( percentage $tCount $repeatCount)"
+hhPerc="$( percentage $hhCount $repeatCount)"
+ttPerc="$( percentage $ttCount $repeatCount)"
+htPerc="$( percentage $htCount $repeatCount)"
+thPerc="$( percentage $thCount $repeatCount)"
+echo both heads percentage : $hhPerc
+echo both tails percentage : $ttPerc
+echo first heads and second tails percentage : $htPerc
+echo first tails and second heads percentage : $thPerc
+
