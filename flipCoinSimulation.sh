@@ -60,6 +60,33 @@ function displayData()
 	  perc="$( percentage ${valArr[$ind]} $repititions )"
 	  echo "${keyArr[$ind]}	%	=	$perc"	
 	done
+	
+	echo key arr before sorting : ${keyArr[@]}
+	echo val arr before sorting : ${valArr[@]}
+	for ((i = 0; i<elCount; i++))	
+	do
+		jCount=$(( $elCount - 1 ))
+		for (( j=0 ; $j < $jCount ; j++ ))
+		do	
+			k=$(($j+1))
+			num1="${valArr[$j]}"
+			num2="${valArr[$k]}"
+			if (( ${valArr[$j]:-0} < ${valArr[$k]:-0} ))
+			then
+				temp=${valArr[$j]}
+				valArr[$j]=${valArr[$k]}
+				valArr[$k]=$temp
+	
+				temp1=${keyArr[$j]}
+	     	keyArr[$j]=${keyArr[$k]}
+	      	keyArr[$k]=$temp1
+		fi
+		done
+	done
+	for (( ind=0 ; $ind<$elCount ;ind++ ))
+	do
+		echo $ind	${keyArr[$ind]}	${valArr[$ind]}
+	done
 }
 
 read -p "how much time you flip coin " repititions
